@@ -27,7 +27,7 @@ public class App {
 
 	public static void main(String[] args) {
 		App app = new App();
-		 app.launch();
+		app.launch();
 	}
 
 	private void launch() {
@@ -36,12 +36,17 @@ public class App {
 		String path = "D:\\简书备份\\user-1281543-1513122953\\jianshu";
 
 		File rootFile = new File(path);
-		List<File> folders = listCategoryFolders(rootFile);
-		downImages(folders);
+		List<File> folders = listFolders(rootFile);
+
+		startWork(folders);
 		System.out.println("========= 你有" + count + "篇文章待下载 =========");
 	}
 
-	private void downImages(List<File> folders) {
+	/**
+	 * 遍历所有md文件
+	 * @param folders
+	 */
+	private void startWork(List<File> folders) {
 		for(File folder : folders){
 			for(File article : folder.listFiles()){
 				if(article.isFile()){
@@ -52,6 +57,10 @@ public class App {
 		}
 	}
 
+	/**
+	 * 发送请求
+	 * @param article
+	 */
 	private void sendRequest(File article) {
 		try {
 			// 资源映射
@@ -80,6 +89,11 @@ public class App {
 		}
 	}
 
+	/**
+	 * 保存图片文件并更新md文件图片链接映射
+	 * @param ret
+	 * @param params
+	 */
 	protected synchronized void updateArticle(byte[] ret, Map<String, String> params) {
 		try {
 			String name = params.get("name");
@@ -110,7 +124,12 @@ public class App {
 		}
 	}
 
-	private List<File> listCategoryFolders(File rootFile) {
+	/**
+	 * 列出根目錄所有的类别目录
+	 * @param rootFile md文件根目錄
+	 * @return
+	 */
+	private List<File> listFolders(File rootFile) {
 		List<File> list = new ArrayList<File>();
 		for(File folder : rootFile.listFiles()){
 			if(folder.isDirectory()){
