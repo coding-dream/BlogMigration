@@ -17,9 +17,8 @@ import com.less.migration.BlogHttpClient.Callback;
 public class App {
 
 	private static final String regexStr = "!\\[.*\\]\\(([a-zA-z]+://[^\\s]*)\\)";
-	protected static final String BASE_FOLDER = "F:/JianShu/";
+	protected static final String BASE_FOLDER = "F:/GitHub/Temp/";
 	protected static final String PATH_IMAGE_FOLDER = BASE_FOLDER + "images";
-	protected static final String PATH_ARTICLE_FOLDER = BASE_FOLDER + "blogs";
 
 	private Pattern regex;
 
@@ -33,13 +32,13 @@ public class App {
 	private void launch() {
 		regex = Pattern.compile(regexStr);
 
-		String path = "D:\\简书备份\\user-1281543-1513122953\\jianshu";
+		String path = "F:\\GitHub\\Temp\\user-1281543-1513429475";
 
 		File rootFile = new File(path);
 		List<File> folders = listFolders(rootFile);
 
 		startWork(folders);
-		System.out.println("========= 你有" + count + "篇文章待下载 =========");
+		System.out.println("========= 您的" + count + "篇文章已下载完毕 =========");
 	}
 
 	/**
@@ -111,9 +110,9 @@ public class App {
 				}
 				FileUtils.writeByteArrayToFile(destImage, ret);
 				// 更新文章内容
-				String mdUpdate = md.replace(srcImage, destImageStr);
-				// 写入md文件
-				File destArticle = new File(PATH_ARTICLE_FOLDER + File.separator + category + File.separator + name);
+				String mdUpdate = md.replace(srcImage, "../images/" + destImageStr + ".png");
+				// 写入md文件,直接在源文件中写,因为该文件如果存在多张图片会被多次读入和写入,如果没有图片则无操作.
+				File destArticle = new File(path);
 				if(!destArticle.getParentFile().exists()){
 					destArticle.getParentFile().mkdirs();
 				}
